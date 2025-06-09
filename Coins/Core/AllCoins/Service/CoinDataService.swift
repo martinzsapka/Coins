@@ -50,11 +50,18 @@ class CoinDataService: HTTPDataService {
     }
     
     func fetchCoinDetails(id: String) async throws -> CoinDetails? {
+        if let cached = CoinDetailsCache.shared.get(forKey: id) {
+            print("DEBUG: Got details from cache")
+            return cached
+        }
         guard let endpoint = fetchCoinDetailsURLString(id: id) else {
             throw CoinAPIError.requestFailed(description: "Invalid endpoint")
         }
         
         let details: CoinDetails = try await fetchData(endpoint: endpoint)
+        print("DEBUG: Got details from API")
+        CoinDetailsCache.shared.set(details, forKey: id)
+        
         return details
     }
 }
