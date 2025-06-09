@@ -11,6 +11,53 @@ class CoinDataService {
     
     private let urlString = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h&locale=en"
     
+    func fetchCoins() async throws -> [Coin] {
+        guard let url = URL(string: urlString) else { return [] }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw CoinAPIError.requestFailed(description: "Request failed")
+        }
+        
+        guard httpResponse.statusCode == 200 else {
+            throw CoinAPIError.invalidStatusCode(statusCode: httpResponse.statusCode)
+        }
+        
+        do {
+            let coins = try JSONDecoder().decode([Coin].self, from: data)
+            return coins
+        } catch {
+            print("DEBUG: Error \(error.localizedDescription)")
+            throw error as? CoinAPIError ?? .unknownError(error: error)
+        }
+    }
+    
+    func fetchCoinDetails(id: String) async throws -> CoinDetails? {
+        let detailsUrlString = "https://api.coingecko.com/api/v3/coins/\(id)?localization=false"
+        guard let url = URL(string: detailsUrlString) else { return nil }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw CoinAPIError.requestFailed(description: "Request failed")
+        }
+        
+        guard httpResponse.statusCode == 200 else {
+            throw CoinAPIError.invalidStatusCode(statusCode: httpResponse.statusCode)
+        }
+        
+        do {
+            let details = try JSONDecoder().decode(CoinDetails.self, from: data)
+            return details
+        } catch {
+            print("DEBUG: Error \(error.localizedDescription)")
+            throw error as? CoinAPIError ?? .unknownError(error: error)
+        }
+    }
+}
+
+extension CoinDataService {
     func fetchCoinsWithResult(completion: @escaping(Result<[Coin], CoinAPIError>) -> Void) {
         guard let url = URL(string: urlString) else { return }
         
