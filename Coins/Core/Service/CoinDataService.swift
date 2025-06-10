@@ -8,7 +8,7 @@
 import Foundation
 
 protocol CoinDataServiceProtocol {
-    func fetchCoins() async throws -> [Coin]
+    func fetchCoins() async throws -> [CoinListItem]
     func fetchCoinDetails(id: String) async throws -> CoinDetails?
     
 }
@@ -46,12 +46,12 @@ class CoinDataService: CoinDataServiceProtocol, HTTPDataService {
         return components.url?.absoluteString
     }
     
-    func fetchCoins() async throws -> [Coin] {
+    func fetchCoins() async throws -> [CoinListItem] {
         guard let endpoint = fetchCoinsURLString else {
             throw CoinAPIError.requestFailed(description: "Invalid endpoint")
         }
         
-        let coins: [Coin] = try await fetchData(endpoint: endpoint)
+        let coins: [CoinListItem] = try await fetchData(endpoint: endpoint)
         return coins
     }
     

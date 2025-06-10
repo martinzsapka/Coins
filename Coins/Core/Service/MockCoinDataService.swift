@@ -6,8 +6,8 @@
 //
 
 class MockCoinDataService: CoinDataServiceProtocol {
-    func fetchCoins() async throws -> [Coin] {
-        let bitcoin = Coin(id: "bitcoin", symbol: "btc", name: "Bitcoin", currentPrice: 110000, marketCapRank: 1)
+    func fetchCoins() async throws -> [CoinListItem] {
+        let bitcoin = CoinListItem(id: "bitcoin", symbol: "btc", name: "Bitcoin", currentPrice: 110000, marketCapRank: 1)
         return [bitcoin]
     }
     

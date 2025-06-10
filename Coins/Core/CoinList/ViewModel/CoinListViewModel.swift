@@ -7,8 +7,8 @@
 
 import Foundation
 
-class CoinsViewModel: ObservableObject {
-    @Published var coins = [Coin]()
+class CoinListViewModel: ObservableObject {
+    @Published var coins = [CoinListItem]()
     @Published var errorMessage: String?
     
     private let service: CoinDataServiceProtocol

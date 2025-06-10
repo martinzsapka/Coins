@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     private let service: CoinDataServiceProtocol
-    @StateObject var viewModel: CoinsViewModel
+    @StateObject var viewModel: CoinListViewModel
     
     init(service: CoinDataServiceProtocol) {
         self.service = service
-        self._viewModel = StateObject(wrappedValue: CoinsViewModel(service: service))
+        self._viewModel = StateObject(wrappedValue: CoinListViewModel(service: service))
     }
     
     var body: some View {
@@ -36,7 +36,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationDestination(for: Coin.self, destination: { coin in
+            .navigationDestination(for: CoinListItem.self, destination: { coin in
                 CoinDetailsView(coin: coin, service: service)
             })
             .overlay {
