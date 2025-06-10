@@ -7,7 +7,13 @@
 
 import Foundation
 
-class CoinDataService: HTTPDataService {
+protocol CoinDataServiceProtocol {
+    func fetchCoins() async throws -> [Coin]
+    func fetchCoinDetails(id: String) async throws -> CoinDetails?
+    
+}
+
+class CoinDataService: CoinDataServiceProtocol, HTTPDataService {
     
     private var baseURLComponents: URLComponents {
         var components = URLComponents()
