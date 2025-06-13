@@ -9,8 +9,16 @@ import SwiftUI
 
 struct LoginView: View {
     
+    private let authManager: AuthManager
+    
     @State private var email = ""
     @State private var password = ""
+    @StateObject var viewModel: LoginViewModel
+    
+    init(authManager: AuthManager) {
+        self.authManager = authManager
+        self._viewModel = StateObject(wrappedValue: LoginViewModel(authManager: authManager))
+    }
     
     var body: some View {
         NavigationStack {
@@ -37,19 +45,23 @@ struct LoginView: View {
                 }
                 
                 Button {
-                    print("DEBUG: Log in")
+                    Task {
+                        await viewModel.login(withEmail: email, password: password)
+                    }
                 } label: {
                     Text("Login")
                         .modifier(ButtonModifier())
                 }
                 .padding(.vertical)
+                .disabled(!formIsValid)
+                .opacity(formIsValid ? 1.0 : 0.7)
                 
                 Spacer()
                 
                 Divider()
                 
                 NavigationLink {
-                    RegistrationView()
+                    RegistrationView(authManager: authManager)
                         .navigationBarBackButtonHidden()
                 } label: {
                     HStack(spacing: 2) {
@@ -66,6 +78,14 @@ struct LoginView: View {
     }
 }
 
+// MARK: - AuthenticationFormProtocol
+
+extension LoginView: AuthenticationFormProtocol {
+    var formIsValid: Bool {
+        return !email.isEmpty && email.contains("@") && !password.isEmpty
+    }
+}
+
 #Preview {
-    LoginView()
+    LoginView(authManager: AuthManager(service: MockAuthService()))
 }

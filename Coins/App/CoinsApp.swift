@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct CoinsApp: App {
+    let authManager = AuthManager(service: MockAuthService())
+    let service = MockCoinDataService()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView(service: MockCoinDataService())
+            ContentView(
+                authManager: authManager,
+                service: service
+            )
         }
     }
 }

@@ -8,17 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var authManager: AuthManager
     private let service: CoinDataServiceProtocol
     
-    init(service: CoinDataServiceProtocol) {
+    init(authManager: AuthManager, service: CoinDataServiceProtocol) {
         self.service = service
+        self.authManager = authManager
     }
     
     var body: some View {
-        CoinListView(service: service)
+        Group {
+            if authManager.userSessionId == nil {
+                LoginView(authManager: authManager)
+            } else {
+                CoinListView(service: service)
+            }
+        }
     }
 }
 
 #Preview {
-    ContentView(service: MockCoinDataService())
+    ContentView(authManager: AuthManager(service: MockAuthService()), service: MockCoinDataService())
 }
