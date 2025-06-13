@@ -21,6 +21,16 @@
 		EFD4DC502DF973D20078F43B /* CoinsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoinsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		EFD4DC952DFC1E430078F43B /* Exceptions for "CoinsTests" folder in "Coins" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TestData.swift,
+			);
+			target = EF462B962DF5C04D0006AC43 /* Coins */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		EF462B992DF5C04D0006AC43 /* Coins */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -29,6 +39,9 @@
 		};
 		EFD4DC512DF973D20078F43B /* CoinsTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EFD4DC952DFC1E430078F43B /* Exceptions for "CoinsTests" folder in "Coins" target */,
+			);
 			path = CoinsTests;
 			sourceTree = "<group>";
 		};

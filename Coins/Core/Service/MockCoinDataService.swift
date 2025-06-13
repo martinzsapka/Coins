@@ -5,10 +5,21 @@
 //  Created by Support Aximmetry on 10/06/2025.
 //
 
+import Foundation
+
 class MockCoinDataService: CoinDataServiceProtocol {
+    var mockCoinListData: Data?
+    var mockError: CoinAPIError?
+    
     func fetchCoins() async throws -> [CoinListItem] {
-        let bitcoin = CoinListItem(id: "bitcoin", symbol: "btc", name: "Bitcoin", currentPrice: 110000, marketCapRank: 1)
-        return [bitcoin]
+        if let mockError { throw mockError }
+        
+        do {
+            let coins = try JSONDecoder().decode([CoinListItem].self, from: mockCoinListData ?? mockCoinList_marketCapDesc)
+            return coins
+        } catch {
+            throw error as? CoinAPIError ?? .unknownError(error: error)
+        }
     }
     
     func fetchCoinDetails(id: String) async throws -> CoinDetails? {

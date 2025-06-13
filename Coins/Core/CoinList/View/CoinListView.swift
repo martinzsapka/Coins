@@ -36,6 +36,9 @@ struct CoinListView: View {
                     }
                 }
             }
+            .task {
+                await viewModel.fetchCoins()
+            }
             .navigationDestination(for: CoinListItem.self, destination: { coin in
                 CoinDetailsView(coin: coin, service: service)
             })

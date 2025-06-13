@@ -12,7 +12,7 @@ final class CoinsTests: XCTestCase {
 
     func test_DecodeCoinsIntoArray() throws {
         do {
-            let coins = try JSONDecoder().decode([CoinListItem].self, from: testCoinsData)
+            let coins = try JSONDecoder().decode([CoinListItem].self, from: mockCoinList_marketCapDesc)
             XCTAssertEqual(coins.count, 20)
             XCTAssertEqual(coins, coins.sorted(by: { $0.marketCapRank < $1.marketCapRank }))
         } catch {
