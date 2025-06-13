@@ -21,7 +21,7 @@ struct ContentView: View {
             if authManager.userSessionId == nil {
                 LoginView(authManager: authManager)
             } else {
-                CoinListView(service: service)
+                CoinListView(authManager: authManager, service: service)
             }
         }
     }

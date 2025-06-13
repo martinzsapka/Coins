@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct CoinListView: View {
+    private let authManager: AuthManager
     private let service: CoinDataServiceProtocol
     @StateObject var viewModel: CoinListViewModel
     
-    init(service: CoinDataServiceProtocol) {
+    init(authManager: AuthManager, service: CoinDataServiceProtocol) {
+        self.authManager = authManager
         self.service = service
         self._viewModel = StateObject(wrappedValue: CoinListViewModel(service: service))
     }
@@ -47,10 +49,22 @@ struct CoinListView: View {
                     Text(error)
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        self.authManager.logout()
+                    }) {
+                        Text("Logout")
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
-    CoinListView(service: MockCoinDataService())
+    CoinListView(
+        authManager: AuthManager(service: MockAuthService()),
+        service: MockCoinDataService()
+    )
 }
